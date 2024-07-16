@@ -1,0 +1,20 @@
+Modified from:
+https://hg.mozilla.org/mozilla-central/file/tip/toolkit/components/maintenanceservice
+
+
+Service parameters:
+
+[0] (service .exe name)
+[1] software-update
+[2] updater.exe
+[3] apply-dir
+
+1) room control server downloads latest update
+2) at automatic update time, room control server runs "startupdate.exe" (installed as a path sibling of room control server) 
+	with a single argument (the full path of the installer .exe)
+3) startupdate.exe will determine the location of its module and use that as the install directory
+4) startupdate.exe will start the update service with the following parameters:
+	software-update
+	"C:\Windows\ServiceProfiles\LocalService\AppData\Local\Aveo Systems\Mira Connect\Updates\mira-connect-setup-0.4.0.1.exe" [the installer path]
+	"C:\Program Files\Aveo Systems\Mira Connect" [the install dir, determined by startupdate.exe]
+5) update service validates parameters, checks authenticode signature of installer, copies it to secure directory for execution
